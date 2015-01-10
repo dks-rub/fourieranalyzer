@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DKS-FourierAnalyzer</string>
+    <string name="graph_lable">Fourier Transform (Time)</string>
+    <string name="bar_lable">Fourier Transform (Bars)</string>
+
+    <string name="action_about_us">About us</string>
+    <string name="html_about_us"></string>
+</resources>
