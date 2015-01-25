@@ -7,4 +7,10 @@
 
     <string name="action_about_us">About us</string>
     <string name="html_about_us"></string>
+    
+    <string name="alert_decline">Decline</string>
+    <string name="update_error">Update Server not found!</string>
+    <string name="update_needed">There is a newer version of this app available! Please Update!</string>
+    <string name="alert_update">Update</string>
+    <string name="update_title">Update available</string>
 </resources>

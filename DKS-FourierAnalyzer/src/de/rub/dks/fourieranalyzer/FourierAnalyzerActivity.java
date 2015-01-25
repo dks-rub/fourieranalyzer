@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -27,6 +29,7 @@ import de.rub.dks.audioRecorder.AudioRecordListener;
 import de.rub.dks.audioRecorder.AudioRecorder;
 import de.rub.dks.fft.FFT;
 import de.rub.dks.fft.FFTConsumer;
+import de.rub.dks.helper.UpdateHelper;
 
 public class FourierAnalyzerActivity extends Activity implements AudioRecordListener, FFTConsumer, AudioPlaybackListener{
 	public static final int SAMPLE_RATE = 8000;
@@ -45,6 +48,12 @@ public class FourierAnalyzerActivity extends Activity implements AudioRecordList
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fourier_analyzer);
+		
+		//Check Updates
+		Handler mHandler = new Handler(Looper.getMainLooper());
+		UpdateHelper uh = new UpdateHelper(this, getString(R.string.app_name), mHandler);
+		uh.startThread();
+		
 		currentAudio = new ArrayList<>();
 		currentFFT = new ArrayList<>();
 		// init graphviews
