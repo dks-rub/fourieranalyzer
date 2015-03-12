@@ -1,10 +1,11 @@
 # DKS-MeshChat
 Der DKS-Fourieranalyzer nimmt Toene auf und Fourier-Analysiert diese dann.
 
-## Import in Eclipse
-1. `git clone git@git.c0okies.com:dks/fourier-analyser.git`
-2. `Import > Android > Existing Android Code Into Workspace`
-3. `Browse` das Repository komplett auswaehlen.
+## Import in Android Studio
+1. `git clone git@github.com:dks-rub/fourieranalyzer.git`
+2. `Open an exisiting Android Studio project`
+  3. Im Repo den Ordner `DKS-ForierAnalyzer` auswahelen.
+4. Android Studio schlaegt vor den `sdk`-Pfad zu aendern. Das kann an dem System liegen auf dem vorher entwickelt wurde.
 
 ## Lizenzen
 Fuer diese Projekt verwenden wir als externe Bibliothek zum darstellen der Graphen 
