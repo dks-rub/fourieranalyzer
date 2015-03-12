@@ -4,7 +4,7 @@ Der DKS-Fourieranalyzer nimmt Toene auf und Fourier-Analysiert diese dann.
 ## Import in Android Studio
 1. `git clone git@github.com:dks-rub/fourieranalyzer.git`
 2. `Open an exisiting Android Studio project`
-  3. Im Repo den Ordner `DKS-ForierAnalyzer` auswahelen.
+  3. Im Repo den Ordner `DKS-ForierAnalyzer` auswaehlen.
 4. Android Studio schlaegt vor den `sdk`-Pfad zu aendern. Das kann an dem System liegen auf dem vorher entwickelt wurde.
 
 ## Lizenzen
