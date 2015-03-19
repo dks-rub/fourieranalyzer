@@ -1,6 +1,6 @@
 package de.rub.dks.fft;
 
-/*
+/**
  * How this works??
  * Don't ask!
  * 
@@ -15,6 +15,14 @@ public class FFT {
 	private float passCount = 0;
 	private FFTConsumer consumer;
 
+	/**
+	* Constructor.
+	* Creates a new FFT object which is capable of calculating the spectrum of audio bytes and split them into bands.
+	* @param consumer a consumer which will be notified when new fft data is available, must not be null!
+	* @param desiredBands number of bands/frequency-slices
+	* @param sampleRate the audio sample rate
+	* @param bufferSize adjustable for your performance needs
+	*/
 	public FFT(FFTConsumer consumer, int desiredBands, int sampleRate, int bufferSize) {
 		this.consumer = consumer;
 		this.desiredBands = desiredBands;
@@ -26,7 +34,12 @@ public class FFT {
 		frameSize = 2;
 		audioDataBuffer = new byte[(int) sampleRate << 1];
 	}
-
+	
+	/**
+	* Adds the data to the analyzed set.
+	* When enough data is available the fft will be calculated and the consumer gets notified.
+	* @param data the audio bytes to process
+	*/
 	public void generateFFT(byte[] data) {
 		framesRead += (data.length / frameSize);
 		storeAudioData(data, 0, data.length);
