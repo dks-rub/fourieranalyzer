@@ -31,6 +31,13 @@ import de.rub.dks.fft.FFT;
 import de.rub.dks.fft.FFTConsumer;
 import de.rub.dks.helper.UpdateHelper;
 
+/**
+* The main activity, handling all the GUI, recording and playback.
+* @author Tim Guenther, Max Hoffmann
+* @version 0.0.1
+* @since 01.07.2014
+*
+*/
 public class FourierAnalyzerActivity extends Activity implements AudioRecordListener, FFTConsumer, AudioPlaybackListener{
 	public static final int SAMPLE_RATE = 8000;
 	private LineGraphView graphView;
@@ -56,7 +63,7 @@ public class FourierAnalyzerActivity extends Activity implements AudioRecordList
 		
 		currentAudio = new ArrayList<>();
 		currentFFT = new ArrayList<>();
-		// init graphviews
+		// init graphs
 		graphView = new LineGraphView(getApplicationContext(), getString(R.string.graph_lable));
 		graphSeries = new GraphViewSeries("FFT", new GraphViewSeriesStyle(Color.BLACK, 2), new GraphViewData[0]);
 		graphView.addSeries(graphSeries);
@@ -89,11 +96,10 @@ public class FourierAnalyzerActivity extends Activity implements AudioRecordList
 		((LinearLayout) findViewById(R.id.lineGraph)).addView(graphView);
 		((LinearLayout) findViewById(R.id.barGraph)).addView(barView);
 
-		// init recorder,player and fft analyzer
+		// init recorder, player and fft analyzer
 		recorder = new AudioRecorder(this, SAMPLE_RATE);
 		player = new AudioSamplePlayer(this, SAMPLE_RATE);
-		// fft with 30 bars per frame -> frequency spectrum seperated in 30
-		// bands
+		// fft with 30 bars per frame -> frequency spectrum seperated in 30 bands
 		fft = new FFT(this, 30, SAMPLE_RATE, recorder.getBufferSize());
 
 		// program button behavior
@@ -126,7 +132,8 @@ public class FourierAnalyzerActivity extends Activity implements AudioRecordList
 		});
 	}
 
-	protected void refreshButtons() { // handle button labels and enabled state
+	// handle button labels and enabled state
+	protected void refreshButtons() { 
 		Button bt = (Button) findViewById(R.id.startStopBt);
 		bt.setEnabled(!playbackMode);
 		bt.setText(!recordMode ? "Start Recording" : "Stop Recording");
@@ -135,13 +142,15 @@ public class FourierAnalyzerActivity extends Activity implements AudioRecordList
 		bt.setText(!playbackMode ? "Play" : "Stop");
 	}
 
-	protected void refreshLabels() { // handle label texts
+	// handle label texts
+	protected void refreshLabels() { 
 		TextView txt = (TextView) findViewById(R.id.statusLb);
 		double dur = audioLength / 1000.0;
 		txt.setText("Duration: " + dur + "s");
 	}
 
-	public void handleAudio(final byte[] audio) { // listener for the recorder
+	// listener for the recorder
+	public void handleAudio(final byte[] audio) { 
 		currentAudio.add(audio);
 		audioLength = System.currentTimeMillis() - audioStart;
 		new Thread() {
@@ -151,7 +160,8 @@ public class FourierAnalyzerActivity extends Activity implements AudioRecordList
 		}.start();
 	}
 
-	public void handleFFT(float[] data) { // listener for the fft
+	// listener for the fft
+	public void handleFFT(float[] data) { 
 		barFFT = data;
 		currentFFT.add(data);
 		runOnUiThread(new Runnable() {
@@ -163,7 +173,8 @@ public class FourierAnalyzerActivity extends Activity implements AudioRecordList
 		});
 	}
 
-	public void showLineFFT() { // creates the upper graph
+	// creates the upper graph
+	public void showLineFFT() { 
 		int m = currentFFT.size();
 		GraphViewData[] dat = new GraphViewData[m];
 		for (int i = 0; i < m; i++) {
@@ -178,7 +189,8 @@ public class FourierAnalyzerActivity extends Activity implements AudioRecordList
 		graphView.scrollToEnd();
 	}
 
-	public void showBarFFT() { // creates the lower graph from a single fft sample barFFT
+	// creates the lower graph from a single fft sample barFFT
+	public void showBarFFT() { 
 		if (barFFT == null)
 			return;
 		GraphViewData[] dat = new GraphViewData[barFFT.length];
@@ -187,7 +199,8 @@ public class FourierAnalyzerActivity extends Activity implements AudioRecordList
 		barSeries.resetData(dat);
 	}
 
-	public void playbackFinished() { // listener for audio playback finished
+	// listener for audio playback finished
+	public void playbackFinished() { 
 		playbackMode = false;
 		if (currentFFT.size() > 0)
 			barFFT = currentFFT.get(0);
@@ -199,7 +212,8 @@ public class FourierAnalyzerActivity extends Activity implements AudioRecordList
 		});
 	}
 
-	public void playbackUpdate(final double percentage) { // listener for audio playback progress
+	// listener for audio playback progress
+	public void playbackUpdate(final double percentage) { 
 		runOnUiThread(new Runnable() {
 			public void run() {
 				barFFT = currentFFT.get(Math.min(currentFFT.size() - 1, (int) (currentFFT.size() * percentage + 7)));
@@ -214,34 +228,16 @@ public class FourierAnalyzerActivity extends Activity implements AudioRecordList
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 	}
-
-
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.main, menu);
-//		return true;
-//	}
-//
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//
-//		if (item.getItemId() == R.id.action_about_us) {
-//			// Open new Activity for AboutUs
-//			Intent intent = new Intent(this, AboutUsActivity.class);
-//			startActivity(intent);
-//			return true;
-//		}
-//
-//		return super.onOptionsItemSelected(item);
-//	}
 	
-	public void onPause() { //stop on pause
+	//stop on pause
+	public void onPause() { 
 		super.onPause();
 		recorder.stop();
 		player.stop();
 	}
 
-	public void onResume() { //reset on resume (keep record data)
+	 //reset on resume (keep record data)
+	public void onResume() {
 		super.onResume();
 		recordMode = playbackMode = false;
 		refreshButtons();
